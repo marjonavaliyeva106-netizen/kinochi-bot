@@ -1,3 +1,2 @@
 aiogram
-aiosqlite
-pip freeze > requirements.txt
+python-dotenv
