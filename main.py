@@ -295,14 +295,14 @@ async def random_movie_handler(call: CallbackQuery):
         async with db.execute("SELECT file_id, caption, code FROM movies ORDER BY RANDOM() LIMIT 1") as cursor:
             movie = await cursor.fetchone()
             
-    if movie:
-        file_id, caption, code = movie
-        text = f"{caption}\n\n🎬 Kod: <code>{code}</code>" if caption else f"🎬 Kod: <code>{code}</code>"
-        await call.message.answer_video(video=file_id, caption=text)
-        await db.execute("UPDATE movies SET views = views + 1 WHERE code = ?", (code,))
-        await db.commit()
-    else:
-        await call.answer("Hozircha kinolar yo'q.", show_alert=True)
+        if movie:
+            file_id, caption, code = movie
+            text = f"{caption}\n\n🎬 Kod: <code>{code}</code>" if caption else f"🎬 Kod: <code>{code}</code>"
+            await call.message.answer_video(video=file_id, caption=text)
+            await db.execute("UPDATE movies SET views = views + 1 WHERE code = ?", (code,))
+            await db.commit()
+        else:
+            await call.answer("Hozircha kinolar yo'q.", show_alert=True)
 
 @dp.message()
 async def universal_search(message: Message):
