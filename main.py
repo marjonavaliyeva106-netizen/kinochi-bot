@@ -29,7 +29,7 @@ admins_env = os.getenv("ADMINS", "")
 ADMINS = [int(id.strip()) for id in admins_env.split(",") if id.strip().isdigit()]
 
 CHANNEL_ID = os.getenv("CHANNEL_ID")
-CHANNEL_URL = os.getenv("CHANNEL_URL", "https://t.me/kanalingiz")
+CHANNEL_URL = os.getenv("CHANNEL_URL", "https://t.me/nexora_startup")
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN topilmadi!")
