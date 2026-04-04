@@ -42,6 +42,7 @@ DB_PATH = "kinochi.db"
 
 async def init_db():
     async with aiosqlite.connect(DB_PATH) as db:
+        # User jadvalini yangidan yaratish (agar yo'q bo'lsa)
         await db.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
@@ -50,6 +51,7 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Kino jadvalini yangidan yaratish
         await db.execute("""
             CREATE TABLE IF NOT EXISTS movies (
                 code TEXT PRIMARY KEY,
@@ -59,6 +61,18 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        
+        # AGAR JADVAL OLDINDAN BOR BO'LSA, USTUNLARNI TEKSHIRIB QO'SHISH
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN username TEXT")
+        except: pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN full_name TEXT")
+        except: pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+        except: pass
+        
         await db.commit()
 
 # --- HOLATLAR ---
