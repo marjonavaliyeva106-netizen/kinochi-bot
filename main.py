@@ -38,11 +38,11 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher()
 
 # --- MA'LUMOTLAR BAZASI ---
-DB_PATH = "kinochi.db"
+DB_PATH = "movie_bot_v2.db"
 
 async def init_db():
     async with aiosqlite.connect(DB_PATH) as db:
-        # User jadvali
+        # Users jadvali
         await db.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
