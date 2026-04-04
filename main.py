@@ -42,7 +42,7 @@ DB_PATH = "kinochi.db"
 
 async def init_db():
     async with aiosqlite.connect(DB_PATH) as db:
-        # 1. Jadvallarni yaratish (agar yo'q bo'lsa)
+        # User jadvali
         await db.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
@@ -51,6 +51,7 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Movies jadvali
         await db.execute("""
             CREATE TABLE IF NOT EXISTS movies (
                 code TEXT PRIMARY KEY,
@@ -60,22 +61,6 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-        
-        # 2. Mavjud jadvallarga yetishmayotgan ustunlarni qo'shish (MIGRATSIYA)
-        # Users jadvali uchun
-        columns_users = [val[1] for val in await db.execute_fetchall("PRAGMA table_info(users)")]
-        if "username" not in columns_users:
-            await db.execute("ALTER TABLE users ADD COLUMN username TEXT")
-        if "full_name" not in columns_users:
-            await db.execute("ALTER TABLE users ADD COLUMN full_name TEXT")
-            
-        # Movies jadvali uchun
-        columns_movies = [val[1] for val in await db.execute_fetchall("PRAGMA table_info(movies)")]
-        if "views" not in columns_movies:
-            await db.execute("ALTER TABLE movies ADD COLUMN views INTEGER DEFAULT 0")
-        if "created_at" not in columns_movies:
-            await db.execute("ALTER TABLE movies ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-            
         await db.commit()
 
 # --- HOLATLAR ---
