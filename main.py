@@ -146,7 +146,7 @@ async def check_sub_handler(call: CallbackQuery):
     else:
         await call.answer("Barcha kanallarga a'zo bo'lishingiz shart!", show_alert=True)
 
-@dp.message(Command("admin"))
+@dp.message(Command("admin", "admins"))
 async def admin_panel(message: Message):
     if message.from_user.id in ADMINS:
         await message.answer("🛠 <b>Admin Boshqaruv Paneli:</b>", reply_markup=admin_kb())
@@ -162,7 +162,11 @@ async def admin_add_start(call: CallbackQuery, state: FSMContext):
 @dp.message(AdminStates.waiting_for_movie, F.video)
 async def process_movie_file(message: Message, state: FSMContext):
     await state.update_data(file_id=message.video.file_id, caption=message.caption)
-    await message.answer("🔢 Kino uchun kod kiriting (yoki 'auto' deb yozing tasodifiy kod uchun):")
+    await message.answer(
+        "🎬 <b>Video qabul qilindi!</b>\n\n"
+        "🔢 Ushbu kino uchun <b>KOD</b> kiriting:\n"
+        "<i>(Masalan: 1024. Agar tasodifiy kod kerak bo'lsa 'auto' deb yozing)</i>"
+    )
     await state.set_state(AdminStates.waiting_for_code)
 
 @dp.message(AdminStates.waiting_for_code)
@@ -339,8 +343,8 @@ async def universal_search(message: Message):
 async def set_commands(bot: Bot):
     commands = [
         BotCommand(command="start", description="Botni ishga tushirish"),
-        BotCommand(command="help", description="Yordam"),
-        BotCommand(command="admin", description="Admin paneli")
+        BotCommand(command="help", description="Yordam va ko'llanma"),
+        BotCommand(command="admin", description="Admin paneli (Faqat adminlar)")
     ]
     await bot.set_my_commands(commands)
 
