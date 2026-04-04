@@ -7,6 +7,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 from aiogram import Bot, Dispatcher, types, F
+from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import Command
 from aiogram.types import (
     InlineKeyboardMarkup, 
@@ -30,7 +31,7 @@ CHANNEL_URL = os.getenv("CHANNEL_URL", "https://t.me/nexora_startup")
 if not TOKEN:
     raise ValueError("BOT_TOKEN topilmadi!")
 
-bot = Bot(token=TOKEN, parse_mode="HTML")
+bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher()
 
 # --- MA'LUMOTLAR BAZASI ---
