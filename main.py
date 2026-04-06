@@ -38,7 +38,7 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher()
 
 # --- MA'LUMOTLAR BAZASI ---
-DB_PATH = "movie_bot_v2.db"
+DB_PATH = "/app/data/kinochi.db"
 
 async def init_db():
     async with aiosqlite.connect(DB_PATH) as db:
