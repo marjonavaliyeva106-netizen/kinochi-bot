@@ -52,6 +52,7 @@ async def init_db():
         os.makedirs(db_dir, exist_ok=True)
         
     async with aiosqlite.connect(DB_PATH) as db:
+        # User jadvalini yaratish
         await db.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
@@ -61,13 +62,14 @@ async def init_db():
             )
         """)
         
-        # Migratsiya: Agar username ustuni bo'lmasa qo'shish
-        try:
-            await db.execute("ALTER TABLE users ADD COLUMN username TEXT")
-            await db.commit()
-        except:
-            pass
+        # 'users' jadvali uchun migratsiyalar
+        for column in [("username", "TEXT"), ("full_name", "TEXT")]:
+            try:
+                await db.execute(f"ALTER TABLE users ADD COLUMN {column[0]} {column[1]}")
+                await db.commit()
+            except: pass
 
+        # Movies jadvalini yaratish
         await db.execute("""
             CREATE TABLE IF NOT EXISTS movies (
                 code TEXT PRIMARY KEY,
@@ -77,6 +79,14 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # 'movies' jadvali uchun migratsiyalar (agar kerak bo'lsa)
+        for column in [("views", "INTEGER DEFAULT 0"), ("caption", "TEXT")]:
+            try:
+                await db.execute(f"ALTER TABLE movies ADD COLUMN {column[0]} {column[1]}")
+                await db.commit()
+            except: pass
+            
         await db.commit()
 
 # --- HOLATLAR ---
