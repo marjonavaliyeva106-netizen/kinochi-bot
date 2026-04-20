@@ -60,6 +60,14 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        
+        # Migratsiya: Agar username ustuni bo'lmasa qo'shish
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN username TEXT")
+            await db.commit()
+        except:
+            pass
+
         await db.execute("""
             CREATE TABLE IF NOT EXISTS movies (
                 code TEXT PRIMARY KEY,
