@@ -43,8 +43,8 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher()
 
 # --- MA'LUMOTLAR BAZASI ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.getenv("DB_PATH", os.path.join(BASE_DIR, "kinochi.db"))
+# Railway Volume uchun yo'lni saqlab qolamiz
+DB_PATH = os.getenv("DB_PATH", "/app/data/kinochi.db")
 
 async def init_db():
     db_dir = os.path.dirname(DB_PATH)
